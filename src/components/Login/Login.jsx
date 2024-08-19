@@ -1,20 +1,15 @@
 import React, { useEffect } from "react"
-import { _getUsers } from "../../utils/data"
 // import './Login.css'
+import { useDispatch, useSelector } from "react-redux"
+import { getUsers } from "../../actions/userActions"
 
 export default function Login() {
-    const [users, setUsers] = React.useState({})
+    const dispatch = useDispatch()
+    const users = useSelector((state) => state.user.users)
 
     useEffect(() => {
-        const response = _getUsers() 
-        response.then(result => {
-            setUsers(result)
-        }).catch(error => console.log(error))
-    }, [])
-
-    // useEffect(() => {
-    //     console.log(users)
-    // }, [users])
+        dispatch(getUsers())
+    }, [dispatch])
 
     return (
         <div className="login-container shadow-lg rounded-md w-11/12 max-w-[480px] sm:max-w-[640px] bg-slate-600 mx-auto mt-16 sm:mt-10">
@@ -28,7 +23,7 @@ export default function Login() {
             <div className="user-name flex justify-center">
             <select id="user-select" className="p-2 w-3/4 sm:w-1/2 border border-gray-300 rounded">
                 <option value="Select User">Select User</option>
-                {Object.keys(users).map((key) => {
+                {/* {Object.keys(users).map((key) => {
                 const user = users[key];
 
                 return (
@@ -36,7 +31,12 @@ export default function Login() {
                     {user.name}
                     </option>
                 );
-                })}
+                })} */}
+                {
+                    users.map((user) => (
+                        <option key={users.id} value={user.name}>{user.name}</option>
+                    ))
+                }
             </select>
             </div>
         </div>

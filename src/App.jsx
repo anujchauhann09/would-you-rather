@@ -5,7 +5,9 @@ function App() {
 
   return (
     <>
-      <Login />
+      <section className="hero">
+        <Login />
+      </section>
     </>
   )
 }
