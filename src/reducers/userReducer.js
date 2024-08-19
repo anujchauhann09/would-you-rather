@@ -1,7 +1,7 @@
 import {GET_USERS} from '../actions/userActions'
 
 const initialState = {
-    users: []
+    users: {}
 }
 
 export const userReducer = (state = initialState, action) => {

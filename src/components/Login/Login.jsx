@@ -1,15 +1,27 @@
 import React, { useEffect } from "react"
 // import './Login.css'
-import { useDispatch, useSelector } from "react-redux"
-import { getUsers } from "../../actions/userActions"
+import { useDispatch, useSelector } from 'react-redux'
+import { setUsers } from '../../actions/userActions'
+import { _getUsers } from '../../utils/data'
 
 export default function Login() {
     const dispatch = useDispatch()
-    const users = useSelector((state) => state.user.users)
+    const users = useSelector((state) => state.userReducer.users || {})
 
     useEffect(() => {
-        dispatch(getUsers())
+        const fetchUsers = async () => {
+            try {
+                const fetchedUsers = await _getUsers()
+                dispatch(setUsers(fetchedUsers))
+            } catch (error) {
+                console.error('Failed to fetch users: ', error)
+            }
+        }
+
+        fetchUsers()
     }, [dispatch])
+
+    const usersArray = users ? Object.values(users) : []
 
     return (
         <div className="login-container shadow-lg rounded-md w-11/12 max-w-[480px] sm:max-w-[640px] bg-slate-600 mx-auto mt-16 sm:mt-10">
@@ -33,8 +45,8 @@ export default function Login() {
                 );
                 })} */}
                 {
-                    users.map((user) => (
-                        <option key={users.id} value={user.name}>{user.name}</option>
+                    usersArray.map((user) => (
+                        <option key={user.id} value={user.name}>{user.name}</option>
                     ))
                 }
             </select>
